@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Baby Seal Dashboard - Settings</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f1117;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #171923;
+            border-right: 1px solid #292c38;
+            padding: 25px 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #ff3b3b;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #b8bbc7;
+            padding: 13px 15px;
+            border-radius: 8px;
+            display: block;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #242735;
+            color: white;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 240px;
+            padding: 35px;
+            width: calc(100% - 240px);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .user {
+            background: #191c26;
+            border: 1px solid #292c38;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #c7cad5;
+        }
+
+        .status {
+            background: #18251d;
+            color: #55e27a;
+            padding: 9px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .top-right {
+            display: flex;
+            align-items: center;
+        }
+
+        /* HEADER */
+        .welcome {
+            background: #191c26;
+            border: 1px solid #292c38;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #9da1ae;
+        }
+
+        /* CARDS */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: #191c26;
+            border: 1px solid #292c38;
+            border-radius: 12px;
+            padding: 22px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #9da1ae;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        /* INPUTS */
+        .input-group {
+            margin-top: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #b8bbc7;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .input-group input,
+        .input-group select {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid #303340;
+            background: #101218;
+            color: white;
+            outline: none;
+        }
+
+        .input-group input:focus,
+        .input-group select:focus {
+            border-color: #7289da;
+        }
+
+        /* SETTINGS */
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+            border-bottom: 1px solid #292c38;
+        }
+
+        .setting:last-child {
+            border-bottom: none;
+        }
+
+        .setting-name {
+            font-size: 15px;
+        }
+
+        .setting-description {
+            color: #777b89;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* TOGGLE */
+        .toggle {
+            position: relative;
+            width: 46px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #3a3d49;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .toggle input:checked + .slider {
+            background: #7289da;
+        }
+
+        .toggle input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* BUTTON */
+        .button {
+            margin-top: 25px;
+            background: #7289da;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .button:hover {
+            background: #6478c5;
+        }
+
+        /* NOTICE */
+        .notice {
+            margin-top: 20px;
+            background: #211d16;
+            border: 1px solid #594b2e;
+            border-radius: 10px;
+            padding: 15px;
+            color: #c9b98a;
+            font-size: 13px;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                width: calc(100% - 190px);
+                padding: 25px;
+            }
+
+            .topbar {
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .top-right {
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 8px;
+            }
+
+            .status {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+    <div class="logo">
+        🦭 Baby <span>Seal</span>
+    </div>
+
+    <nav class="nav">
+
+        <a href="/">
+            🏠 Home
+        </a>
+
+        <a href="/moderation">
+            🛡️ Moderation
+        </a>
+
+        <a href="/tickets">
+            🎫 Tickets
+        </a>
+
+        <a href="/giveaways">
+            🎉 Giveaways
+        </a>
+
+        <a href="/settings" class="active">
+            ⚙️ Settings
+        </a>
+
+    </nav>
+
+</aside>
+
+
+<!-- MAIN -->
+
+<main class="main">
+
+    <div class="topbar">
+
+        <h1>Settings</h1>
+
+        <div class="top-right">
+
+            <div class="user">
+                👤
+                {% if user %}
+                    {{ user.global_name or user.username }}
+                {% else %}
+                    Guest
+                {% endif %}
+            </div>
+
+            <div class="status">
+                ● Bot Online
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- HEADER -->
+
+    <section class="welcome">
+
+        <h2>⚙️ Baby Seal Settings</h2>
+
+        <p>
+            Configure your bot and dashboard settings
+            from one place.
+        </p>
+
+    </section>
+
+
+    <!-- SETTINGS -->
+
+    <section class="cards">
+
+
+        <!-- BOT CONFIGURATION -->
+
+        <div class="card">
+
+            <h3>🤖 Bot Configuration</h3>
+
+            <p>
+                Configure the basic settings for your
+                Discord bot.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Bot Prefix
+                </label>
+
+                <input
+                    type="text"
+                    value="!"
+                    maxlength="5"
+                >
+
+            </div>
+
+
+            <div class="input-group">
+
+                <label>
+                    Bot Status
+                </label>
+
+                <select>
+
+                    <option>Online</option>
+                    <option>Idle</option>
+                    <option>Do Not Disturb</option>
+                    <option>Invisible</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="card">
+
+            <h3>🛡️ Security</h3>
+
+            <p>
+                Configure security and protection features.
+            </p>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Anti-Nuke
+                    </div>
+
+                    <div class="setting-description">
+                        Protect the server from destructive actions.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Anti-Raid
+                    </div>
+
+                    <div class="setting-description">
+                        Detect unusual joining activity.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- LOGGING -->
+
+        <div class="card">
+
+            <h3>📋 Logging</h3>
+
+            <p>
+                Configure where Baby Seal sends
+                moderation logs.
+            </p>
+
+
+            <div class="input-group">
+
+                <label>
+                    Moderation Log Channel
+                </label>
+
+                <select>
+
+                    <option>#mod-logs</option>
+                    <option>#logs</option>
+                    <option>#staff-logs</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- TICKETS -->
+
+        <div class="card">
+
+            <h3>🎫 Tickets</h3>
+
+            <p>
+                Configure the ticket system.
+            </p>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Enable Tickets
+                    </div>
+
+                    <div class="setting-description">
+                        Allow members to create tickets.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- GIVEAWAYS -->
+
+        <div class="card">
+
+            <h3>🎉 Giveaways</h3>
+
+            <p>
+                Enable or disable giveaway features.
+            </p>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Enable Giveaways
+                    </div>
+
+                    <div class="setting-description">
+                        Allow giveaway management.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <div class="card">
+
+            <h3>🔔 Notifications</h3>
+
+            <p>
+                Configure dashboard notifications.
+            </p>
+
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Dashboard Notifications
+                    </div>
+
+                    <div class="setting-description">
+                        Show important bot notifications.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox" checked>
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <button class="button">
+        Save Settings
+    </button>
+
+
+    <div class="notice">
+
+        ⚠️ These settings are currently visual only.
+        We'll connect them to the Discord bot after
+        the dashboard interface is finished.
+
+    </div>
+
+</main>
+
+</body>
+</html>
