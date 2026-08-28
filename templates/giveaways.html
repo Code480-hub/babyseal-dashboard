@@ -1,0 +1,818 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Baby Seal Dashboard - Giveaways</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #0f1117;
+            color: white;
+            min-height: 100vh;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 240px;
+            background: #171923;
+            border-right: 1px solid #292c38;
+            padding: 25px 15px;
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo span {
+            color: #ff3b3b;
+        }
+
+        .nav {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #b8bbc7;
+            padding: 13px 15px;
+            border-radius: 8px;
+            display: block;
+            font-size: 15px;
+            transition: 0.2s;
+        }
+
+        .nav a:hover,
+        .nav a.active {
+            background: #242735;
+            color: white;
+        }
+
+        /* MAIN */
+        .main {
+            margin-left: 240px;
+            padding: 35px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+        }
+
+        .user {
+            background: #191c26;
+            border: 1px solid #292c38;
+            padding: 10px 15px;
+            border-radius: 10px;
+            color: #c8cad4;
+        }
+
+        .login-button {
+            display: inline-block;
+            background: #5865f2;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .login-button:hover {
+            background: #4752c4;
+        }
+
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, #20243a, #191c26);
+            border: 1px solid #30334a;
+            border-radius: 15px;
+            padding: 28px;
+            margin-bottom: 25px;
+        }
+
+        .header h2 {
+            font-size: 25px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #9da1ae;
+            line-height: 1.5;
+        }
+
+        /* SERVER */
+        .server-section {
+            background: #191c26;
+            border: 1px solid #292c38;
+            border-radius: 13px;
+            padding: 22px;
+            margin-bottom: 25px;
+        }
+
+        .server-section h2 {
+            margin-bottom: 8px;
+        }
+
+        .server-section p {
+            color: #9da1ae;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .server-form {
+            display: flex;
+            gap: 12px;
+        }
+
+        .server-select {
+            flex: 1;
+            background: #101116;
+            border: 1px solid #30323d;
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .server-button {
+            background: #5865f2;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .server-button:hover {
+            background: #4752c4;
+        }
+
+        /* CURRENT SERVER */
+        .current-server {
+            background: #18251d;
+            border: 1px solid #31583c;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 25px;
+            color: #a9efb9;
+        }
+
+        /* GRID */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+        }
+
+        .card {
+            background: #191c26;
+            border: 1px solid #292c38;
+            border-radius: 13px;
+            padding: 22px;
+        }
+
+        .card h3 {
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            color: #9da1ae;
+            font-size: 14px;
+            line-height: 1.5;
+            margin-bottom: 18px;
+        }
+
+        /* INPUTS */
+        .input-group {
+            margin-top: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            color: #b9bac2;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .input-group input,
+        .input-group select,
+        .input-group textarea {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid #30323d;
+            background: #101116;
+            color: white;
+            outline: none;
+        }
+
+        .input-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        /* BUTTON */
+        .button {
+            margin-top: 25px;
+            background: #5865f2;
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #4752c4;
+        }
+
+        .secondary-button {
+            margin-top: 10px;
+            background: #242735;
+            border: 1px solid #353846;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .secondary-button:hover {
+            background: #303342;
+        }
+
+        /* TOGGLE */
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .setting-name {
+            font-size: 15px;
+        }
+
+        .setting-description {
+            color: #777985;
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .toggle {
+            position: relative;
+            width: 46px;
+            height: 24px;
+        }
+
+        .toggle input {
+            display: none;
+        }
+
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #3a3c47;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            left: 3px;
+            top: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.2s;
+        }
+
+        .toggle input:checked + .slider {
+            background: #5865f2;
+        }
+
+        .toggle input:checked + .slider:before {
+            transform: translateX(22px);
+        }
+
+        /* NOTICE */
+        .notice {
+            margin-top: 20px;
+            background: #211d16;
+            border: 1px solid #594b2e;
+            border-radius: 10px;
+            padding: 15px;
+            color: #c9b98a;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .no-server {
+            background: #211d16;
+            border: 1px solid #594b2e;
+            border-radius: 10px;
+            padding: 15px;
+            color: #c9b98a;
+        }
+
+        /* MOBILE */
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+                padding: 20px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .server-form {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+
+    <div class="logo">
+        🦭 Baby <span>Seal</span>
+    </div>
+
+    <nav class="nav">
+        <a href="/">🏠 Home</a>
+        <a href="/moderation">🛡️ Moderation</a>
+        <a href="/tickets">🎫 Tickets</a>
+        <a href="/giveaways" class="active">🎉 Giveaways</a>
+        <a href="/settings">⚙️ Settings</a>
+    </nav>
+
+</aside>
+
+
+<!-- MAIN -->
+<main class="main">
+
+    <div class="topbar">
+
+        <h1>Giveaways</h1>
+
+        {% if user %}
+
+            <div class="user">
+                👤 {{ user.global_name or user.username }}
+            </div>
+
+        {% else %}
+
+            <a href="/login" class="login-button">
+                Login with Discord
+            </a>
+
+        {% endif %}
+
+    </div>
+
+
+    {% if user %}
+
+    <!-- HEADER -->
+    <section class="header">
+
+        <h2>🎉 Giveaway Manager</h2>
+
+        <p>
+            Create and manage giveaways for your
+            Discord server using Baby Seal.
+        </p>
+
+    </section>
+
+
+    <!-- SERVER SELECTOR -->
+    <section class="server-section">
+
+        <h2>🛡️ Select a Server</h2>
+
+        <p>
+            Choose which server you want to manage.
+        </p>
+
+        {% if guilds %}
+
+        <form
+            action="/select-server"
+            method="POST"
+            class="server-form"
+        >
+
+            <select
+                name="guild_id"
+                class="server-select"
+                required
+            >
+
+                {% for guild in guilds %}
+
+                <option
+                    value="{{ guild.id }}"
+                    {% if selected_guild and selected_guild.id == guild.id %}
+                        selected
+                    {% endif %}
+                >
+                    {{ guild.name }}
+                </option>
+
+                {% endfor %}
+
+            </select>
+
+            <button
+                type="submit"
+                class="server-button"
+            >
+                Select Server
+            </button>
+
+        </form>
+
+        {% else %}
+
+        <div class="no-server">
+            ⚠️ No manageable servers were found.
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+    {% if selected_guild %}
+
+    <!-- CURRENT SERVER -->
+    <div class="current-server">
+
+        🟢 Currently managing:
+        <strong>{{ selected_guild.name }}</strong>
+
+    </div>
+
+
+    <!-- GIVEAWAY SETTINGS -->
+    <section class="grid">
+
+
+        <!-- PRIZE -->
+        <div class="card">
+
+            <h3>🎁 Giveaway Prize</h3>
+
+            <p>
+                Enter the prize that will be displayed
+                to participants.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Prize
+                </label>
+
+                <input
+                    type="text"
+                    placeholder="Example: 1,000 Robux"
+                    maxlength="100"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- DURATION -->
+        <div class="card">
+
+            <h3>⏱️ Duration</h3>
+
+            <p>
+                Choose how long the giveaway should run.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Duration
+                </label>
+
+                <select>
+
+                    <option>5 Minutes</option>
+                    <option>10 Minutes</option>
+                    <option>30 Minutes</option>
+                    <option>1 Hour</option>
+                    <option>6 Hours</option>
+                    <option>12 Hours</option>
+                    <option>24 Hours</option>
+                    <option>3 Days</option>
+                    <option>7 Days</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- WINNERS -->
+        <div class="card">
+
+            <h3>🏆 Winners</h3>
+
+            <p>
+                Set the number of winners for the giveaway.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Number of Winners
+                </label>
+
+                <input
+                    type="number"
+                    value="1"
+                    min="1"
+                    max="100"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- CHANNEL -->
+        <div class="card">
+
+            <h3>📢 Giveaway Channel</h3>
+
+            <p>
+                Choose where the giveaway announcement
+                will be sent.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Channel
+                </label>
+
+                <select>
+
+                    <option>#giveaways</option>
+                    <option>#events</option>
+                    <option>#general</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+        <div class="card">
+
+            <h3>📝 Description</h3>
+
+            <p>
+                Add an optional description to your giveaway.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Description
+                </label>
+
+                <textarea
+                    placeholder="Good luck everyone! 🎉"
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- REQUIREMENTS -->
+        <div class="card">
+
+            <h3>🔐 Requirements</h3>
+
+            <p>
+                Add optional requirements for participants.
+            </p>
+
+            <div class="input-group">
+
+                <label>
+                    Required Role
+                </label>
+
+                <select>
+
+                    <option>Everyone</option>
+                    <option>Member</option>
+                    <option>Verified</option>
+                    <option>Booster</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+
+        <!-- BONUS ENTRIES -->
+        <div class="card">
+
+            <h3>✨ Bonus Entries</h3>
+
+            <p>
+                Give selected roles additional entries.
+            </p>
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        Enable Bonus Entries
+                    </div>
+
+                    <div class="setting-description">
+                        Give eligible members extra chances.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input type="checkbox">
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+        <!-- DM WINNERS -->
+        <div class="card">
+
+            <h3>📩 Winner Notifications</h3>
+
+            <p>
+                Choose whether winners should receive
+                a direct message.
+            </p>
+
+            <div class="setting">
+
+                <div>
+
+                    <div class="setting-name">
+                        DM Winners
+                    </div>
+
+                    <div class="setting-description">
+                        Send winners a private notification.
+                    </div>
+
+                </div>
+
+                <label class="toggle">
+
+                    <input
+                        type="checkbox"
+                        checked
+                    >
+
+                    <span class="slider"></span>
+
+                </label>
+
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <button class="button">
+        🎉 Start Giveaway
+    </button>
+
+    <button class="secondary-button">
+        🔄 Reset Form
+    </button>
+
+
+    <div class="notice">
+
+        ⚠️ The giveaway controls currently display the
+        dashboard interface. The next step is connecting
+        these controls directly to your Baby Seal bot so
+        giveaways can actually be created in Discord.
+
+    </div>
+
+
+    {% else %}
+
+    <section class="server-section">
+
+        <h2>⚠️ No Server Selected</h2>
+
+        <p>
+            Select a server you can manage to access
+            giveaway settings.
+        </p>
+
+    </section>
+
+    {% endif %}
+
+
+    {% else %}
+
+    <!-- NOT LOGGED IN -->
+    <section class="header">
+
+        <h2>🎉 Giveaways</h2>
+
+        <p>
+            Please log in with Discord to manage
+            giveaways.
+        </p>
+
+        <br>
+
+        <a href="/login" class="login-button">
+            Login with Discord
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+</body>
+</html>
